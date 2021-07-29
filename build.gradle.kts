@@ -3,6 +3,7 @@ import com.google.protobuf.gradle.*
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.21"
     id("com.google.protobuf") version "0.8.17"
+    application
 }
 
 version = "0.1"
@@ -28,12 +29,16 @@ dependencies {
     implementation("io.grpc:grpc-protobuf:${grpcVersion}")
     implementation("io.grpc:grpc-stub:${grpcVersion}")
 
-    compileOnly("javax.annotation:javax.annotation-api:1.3.2")
-
+    implementation("org.slf4j:slf4j-api:1.7.32")
+    implementation("ch.qos.logback:logback-classic:1.2.5")
 }
 
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
+}
+
+application {
+    mainClass.set("org.seariver.GrpcServerKt")
 }
 
 tasks {
