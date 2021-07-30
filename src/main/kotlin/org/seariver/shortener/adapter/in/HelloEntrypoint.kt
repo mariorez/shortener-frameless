@@ -1,4 +1,4 @@
-package org.seariver.adapter.`in`
+package org.seariver.shortener.adapter.`in`
 
 import org.seariver.protogen.HelloRequest
 import org.seariver.protogen.HelloResponse

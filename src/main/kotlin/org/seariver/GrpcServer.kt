@@ -2,7 +2,7 @@ package org.seariver
 
 import io.grpc.Server
 import io.grpc.ServerBuilder
-import org.seariver.adapter.`in`.HelloEntrypoint
+import org.seariver.shortener.adapter.`in`.HelloEntrypoint
 import org.slf4j.LoggerFactory
 
 class GrpcServer constructor(
