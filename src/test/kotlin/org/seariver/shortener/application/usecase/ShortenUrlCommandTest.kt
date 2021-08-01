@@ -7,7 +7,7 @@ import org.seariver.shortener.application.domain.OriginalUrl
 class ShortenUrlCommandTest {
 
     @Test
-    fun `test name placeholder`() {
+    fun `GIVEN valid url MUST create a command`() {
 
         // given
         val url = "https://www.google.com/"
