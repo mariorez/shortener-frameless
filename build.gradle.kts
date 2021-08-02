@@ -34,7 +34,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
-    testImplementation("org.assertj:assertj-core:3.20.2")
+    testImplementation ("com.willowtreeapps.assertk:assertk-jvm:0.24")
 }
 
 java {

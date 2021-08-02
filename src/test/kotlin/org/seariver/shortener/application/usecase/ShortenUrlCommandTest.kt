@@ -1,6 +1,7 @@
 package org.seariver.shortener.application.usecase
 
-import org.assertj.core.api.Assertions.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
 import org.seariver.shortener.application.domain.OriginalUrl
 

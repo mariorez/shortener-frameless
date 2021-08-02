@@ -1,6 +1,8 @@
 package org.seariver.shortener.application.usecase
 
-import org.assertj.core.api.Assertions.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEmpty
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
@@ -27,7 +29,7 @@ class ShortenUrlHandlerTest {
         argumentCaptor<Shortener>().apply {
             verify(repository).create(capture())
             assertThat(firstValue.originalUrl.url).isEqualTo(url)
-            assertThat(firstValue.shortCode.code).isNotBlank()
+            assertThat(firstValue.shortCode.code).isNotEmpty()
         }
     }
 }
