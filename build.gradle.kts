@@ -29,12 +29,20 @@ dependencies {
     implementation("io.grpc:grpc-protobuf:${grpcVersion}")
     implementation("io.grpc:grpc-stub:${grpcVersion}")
 
+    // Database
+    implementation("com.zaxxer:HikariCP:5.0.0")
+    implementation("org.postgresql:postgresql:42.2.23")
+    implementation("org.flywaydb:flyway-core:7.12.0")
+
+    // Log
     implementation("org.slf4j:slf4j-api:1.7.32")
     implementation("ch.qos.logback:logback-classic:1.2.5")
 
+    // Test
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     testImplementation ("com.willowtreeapps.assertk:assertk-jvm:0.24")
+    testImplementation("org.testcontainers:postgresql:1.16.0")
 }
 
 java {
