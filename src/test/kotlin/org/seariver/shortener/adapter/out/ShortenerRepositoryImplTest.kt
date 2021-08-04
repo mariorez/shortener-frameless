@@ -11,9 +11,7 @@ import org.seariver.shortener.application.domain.OriginalUrl
 import org.seariver.shortener.application.domain.ShortCode
 import org.seariver.shortener.application.domain.Shortener
 import org.seariver.shortener.application.port.out.ShortenerRepository
-import org.testcontainers.containers.PostgreSQLContainer
 import javax.sql.DataSource
-
 
 class ShortenerRepositoryImplTest {
 
@@ -26,18 +24,13 @@ class ShortenerRepositoryImplTest {
     @Test
     fun `WHEN creating shortener GIVEN valid data MUST persist in database`() {
 
-        // setup
-        val container = PostgreSQLContainer<Nothing>("postgres:13")
-        container.start()
-        val dataSource = getDataSource(container)
-
         // given
         val originalUrl = OriginalUrl("https://www.google.com")
         val shortCode = ShortCode("qwert")
         val shortener = Shortener(originalUrl, shortCode)
-        val repository = ShortenerRepositoryImpl(dataSource)
 
         // when
+        val repository = ShortenerRepositoryImpl(getDataSource())
         repository.create(shortener)
 
         // then
@@ -47,4 +40,3 @@ class ShortenerRepositoryImplTest {
         assertThat(actual!!.shortCode.code).isEqualTo(shortCode.code)
     }
 }
-

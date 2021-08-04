@@ -3,10 +3,13 @@ package helper
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
-import org.testcontainers.containers.JdbcDatabaseContainer
+import org.testcontainers.containers.PostgreSQLContainer
 import javax.sql.DataSource
 
-fun getDataSource(container: JdbcDatabaseContainer<*>): DataSource {
+fun getDataSource(): DataSource {
+
+    val container = PostgreSQLContainer<Nothing>("postgres:13")
+    container.start()
 
     val hikariConfig = HikariConfig().apply {
         jdbcUrl = container.jdbcUrl
