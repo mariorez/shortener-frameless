@@ -26,7 +26,7 @@ class ShortenerRepositoryImplTest {
 
         // given
         val originalUrl = OriginalUrl("https://www.google.com")
-        val shortCode = ShortCode("qwert")
+        val shortCode = ShortCode("qwert12")
         val shortener = Shortener(originalUrl, shortCode)
 
         // when
@@ -34,7 +34,7 @@ class ShortenerRepositoryImplTest {
         repository.create(shortener)
 
         // then
-        val actual = repository.findByCode(ShortCode("qwert"))
+        val actual = repository.findByCode(ShortCode("qwert12"))
         assertThat(actual).isNotNull()
         assertThat(actual!!.originalUrl.url).isEqualTo(originalUrl.url)
         assertThat(actual!!.shortCode.code).isEqualTo(shortCode.code)

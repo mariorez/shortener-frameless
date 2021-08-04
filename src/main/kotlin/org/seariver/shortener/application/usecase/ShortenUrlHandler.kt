@@ -5,12 +5,14 @@ import org.seariver.shortener.application.domain.Shortener
 import org.seariver.shortener.application.port.out.ShortenerRepository
 
 class ShortenUrlHandler(
-    val repository: ShortenerRepository
+    private val repository: ShortenerRepository
 ) {
     fun handle(command: ShortenUrlCommand) {
 
-        val shortCode = ShortCode("qwert")
+        val code = "qwert12"
+        val shortCode = ShortCode(code)
         val shortener = Shortener(command.originalUrl, shortCode)
         repository.create(shortener)
+        command.result = "https://seariver.org/${code}"
     }
 }
