@@ -1,4 +1,4 @@
-package org.seariver
+package org.seariver.shortener
 
 import io.grpc.Server
 import io.grpc.ServerBuilder
@@ -33,11 +33,4 @@ class GrpcServer constructor(
     fun blockUntilShutdown() {
         server.awaitTermination()
     }
-}
-
-fun main() {
-    val port = 50051
-    val server = GrpcServer(port)
-    server.start()
-    server.blockUntilShutdown()
 }
