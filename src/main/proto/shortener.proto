@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+
+package org.seariver.protogen;
+
+service ShortenerWriteService {
+  rpc createShortenUrl (ShortenRequest) returns (ShortenerResponse) {}
+}
+
+message ShortenRequest {
+  string original_url = 1;
+}
+
+message ShortenerResponse {
+  string original_url = 1;
+  string shortened_url = 2;
+}

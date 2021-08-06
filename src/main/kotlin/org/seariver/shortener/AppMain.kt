@@ -1,8 +1,10 @@
 package org.seariver.shortener
 
 fun main() {
-    val port = 50051
-    val server = GrpcServer(port)
-    server.start()
-    server.blockUntilShutdown()
+
+    GrpcServer(50051).run {
+        this.start()
+        this.blockUntilShutdown()
+    }
+
 }
