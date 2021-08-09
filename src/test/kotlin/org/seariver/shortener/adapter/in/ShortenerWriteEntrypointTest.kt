@@ -16,7 +16,7 @@ class ShortenerWriteEntrypointTest {
         // GIVEN
         val url = "https://www.google.com"
         val request = ShortenRequest.newBuilder()
-            .setOriginalUrl(url)
+            .setSourceUrl(url)
             .build()
 
         runBlocking {
@@ -26,8 +26,8 @@ class ShortenerWriteEntrypointTest {
 
             // THEN
             response.let {
-                assertThat(it.originalUrl).isEqualTo(url)
-                assertThat(it.shortenedUrl).isEqualTo("https://seariver.org/qwert12")
+                assertThat(it.sourceUrl).isEqualTo(url)
+                assertThat(it.shortenedUrl).isEqualTo("https://seariver.org/Qwert")
             }
         }
     }

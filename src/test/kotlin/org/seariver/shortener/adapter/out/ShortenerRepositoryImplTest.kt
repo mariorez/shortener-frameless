@@ -7,9 +7,9 @@ import assertk.assertions.isNotNull
 import helper.getDataSource
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
-import org.seariver.shortener.application.domain.OriginalUrl
 import org.seariver.shortener.application.domain.ShortCode
 import org.seariver.shortener.application.domain.Shortener
+import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.port.out.ShortenerRepository
 import javax.sql.DataSource
 
@@ -25,19 +25,19 @@ class ShortenerRepositoryImplTest {
     fun `WHEN creating shortener GIVEN valid data MUST persist in database`() {
 
         // given
-        val originalUrl = OriginalUrl("https://www.google.com")
-        val shortCode = ShortCode("qwert12")
-        val shortener = Shortener(originalUrl, shortCode)
+        val sourceUrl = SourceUrl("https://www.google.com")
+        val shortCode = ShortCode("Qwert")
+        val shortener = Shortener(sourceUrl, shortCode)
 
         // when
         val repository = ShortenerRepositoryImpl(getDataSource())
         repository.create(shortener)
 
         // then
-        val actualShortener = repository.findByCode(ShortCode("qwert12"))
+        val actualShortener = repository.findBySourceUrl(sourceUrl)
         assertThat(actualShortener).isNotNull()
         actualShortener?.let {
-            assertThat(it.originalUrl.url).isEqualTo(originalUrl.url)
+            assertThat(it.sourceUrl.url).isEqualTo(sourceUrl.url)
             assertThat(it.shortCode.code).isEqualTo(shortCode.code)
         }
     }

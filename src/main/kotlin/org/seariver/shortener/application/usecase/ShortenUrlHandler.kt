@@ -1,6 +1,5 @@
 package org.seariver.shortener.application.usecase
 
-import org.seariver.shortener.application.domain.OriginalUrl
 import org.seariver.shortener.application.domain.ShortCode
 import org.seariver.shortener.application.domain.Shortener
 import org.seariver.shortener.application.port.out.ShortenerRepository
@@ -19,7 +18,7 @@ class ShortenUrlHandler(
             .joinToString("");
 
         val shortCode = ShortCode(code)
-        val shortener = Shortener(command.originalUrl, shortCode)
+        val shortener = Shortener(command.sourceUrl, shortCode)
         repository.create(shortener)
         command.result = "https://seariver.org/${code}"
     }

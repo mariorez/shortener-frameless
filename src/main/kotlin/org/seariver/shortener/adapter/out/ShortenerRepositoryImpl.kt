@@ -1,8 +1,8 @@
 package org.seariver.shortener.adapter.out
 
-import org.seariver.shortener.application.domain.OriginalUrl
 import org.seariver.shortener.application.domain.ShortCode
 import org.seariver.shortener.application.domain.Shortener
+import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.port.out.ShortenerRepository
 import javax.sql.DataSource
 
@@ -14,33 +14,33 @@ class ShortenerRepositoryImpl(
 
     override fun create(shortener: Shortener) {
         val sql = """
-            INSERT INTO shortener (original_url, short_code) 
+            INSERT INTO shortener (source_url, short_code) 
             values (?, ?)
             """.trimIndent()
 
         connection.prepareStatement(sql).run {
-            setString(1, shortener.originalUrl.url)
+            setString(1, shortener.sourceUrl.url)
             setString(2, shortener.shortCode.code)
             executeUpdate()
         }
     }
 
-    override fun findByCode(shortCode: ShortCode): Shortener? {
+    override fun findBySourceUrl(sourceUrl: SourceUrl): Shortener? {
 
         val sql = """
-            SELECT original_url, short_code 
+            SELECT source_url, short_code 
             FROM shortener
-            WHERE short_code = ?
+            WHERE source_url = ?
             """.trimIndent()
 
         var result: Shortener? = null
 
         connection.prepareStatement(sql).run {
-            setString(1, shortCode.code)
+            setString(1, sourceUrl.url)
             executeQuery().run {
                 while (next()) {
                     result = Shortener(
-                        OriginalUrl(getString("original_url")),
+                        SourceUrl(getString("source_url")),
                         ShortCode(getString("short_code"))
                     )
                 }

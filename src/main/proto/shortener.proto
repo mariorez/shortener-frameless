@@ -9,10 +9,10 @@ service ShortenerWriteService {
 }
 
 message ShortenRequest {
-  string original_url = 1;
+  string source_url = 1;
 }
 
 message ShortenerResponse {
-  string original_url = 1;
+  string source_url = 1;
   string shortened_url = 2;
 }

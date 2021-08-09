@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS shortener (
     id BIGSERIAL PRIMARY KEY,
-    original_url VARCHAR(2000) NOT NULL,
+    source_url VARCHAR(2000) NOT NULL,
     short_code VARCHAR(7) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

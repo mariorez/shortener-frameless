@@ -1,8 +1,7 @@
 package org.seariver.shortener.application.usecase
 
-import org.seariver.shortener.application.domain.OriginalUrl
+import org.seariver.shortener.application.domain.SourceUrl
 
-data class ShortenUrlCommand(val originalUrl: OriginalUrl) {
-
+data class ShortenUrlCommand(val sourceUrl: SourceUrl) {
     var result: String? = null
 }

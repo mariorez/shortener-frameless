@@ -10,8 +10,8 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.seariver.shortener.application.domain.OriginalUrl
 import org.seariver.shortener.application.domain.Shortener
+import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.port.out.ShortenerRepository
 
 @TestInstance(PER_CLASS)
@@ -24,7 +24,7 @@ class ShortenUrlHandlerTest {
     fun `GIVEN a valid command MUST persist new shortener data`(url: String) {
 
         // given
-        val command = ShortenUrlCommand(OriginalUrl(url))
+        val command = ShortenUrlCommand(SourceUrl(url))
         val repository = mock<ShortenerRepository>()
 
         // when
@@ -34,7 +34,7 @@ class ShortenUrlHandlerTest {
         // then
         argumentCaptor<Shortener>().apply {
             verify(repository).create(capture())
-            assertThat(firstValue.originalUrl.url).isEqualTo(url)
+            assertThat(firstValue.sourceUrl.url).isEqualTo(url)
             assertThat(firstValue.shortCode.code).isNotEqualTo(lastGeneratedCode)
             assertThat(command.result).isEqualTo("https://seariver.org/${firstValue.shortCode.code}")
             lastGeneratedCode = firstValue.shortCode.code

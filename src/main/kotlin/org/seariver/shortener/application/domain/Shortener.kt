@@ -1,6 +1,6 @@
 package org.seariver.shortener.application.domain
 
 class Shortener(
-    val originalUrl: OriginalUrl,
+    val sourceUrl: SourceUrl,
     val shortCode: ShortCode
 )

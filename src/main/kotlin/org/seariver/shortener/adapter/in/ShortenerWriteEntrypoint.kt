@@ -9,8 +9,8 @@ class ShortenerWriteEntrypoint : ShortenerWriteServiceCoroutineImplBase() {
     override suspend fun createShortenedUrl(request: ShortenRequest): ShortenerResponse {
         return ShortenerResponse
             .newBuilder()
-            .setOriginalUrl(request.originalUrl)
-            .setShortenedUrl("https://seariver.org/qwert12")
+            .setSourceUrl(request.sourceUrl)
+            .setShortenedUrl("https://seariver.org/Qwert")
             .build()
     }
 }
