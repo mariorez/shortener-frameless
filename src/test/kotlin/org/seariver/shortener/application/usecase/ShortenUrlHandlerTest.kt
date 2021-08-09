@@ -2,7 +2,11 @@ package org.seariver.shortener.application.usecase
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import org.junit.jupiter.api.Test
+import assertk.assertions.isNotEqualTo
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -10,13 +14,16 @@ import org.seariver.shortener.application.domain.OriginalUrl
 import org.seariver.shortener.application.domain.Shortener
 import org.seariver.shortener.application.port.out.ShortenerRepository
 
+@TestInstance(PER_CLASS)
 class ShortenUrlHandlerTest {
 
-    @Test
-    fun `GIVEN a valid command MUST persist new shortener data`() {
+    private var lastGeneratedCode: String? = null
+
+    @ParameterizedTest
+    @ValueSource(strings = ["https://www.google.com", "https://radar.org", "https://elba.dev"])
+    fun `GIVEN a valid command MUST persist new shortener data`(url: String) {
 
         // given
-        val url = "https://www.google.com.br"
         val command = ShortenUrlCommand(OriginalUrl(url))
         val repository = mock<ShortenerRepository>()
 
@@ -28,8 +35,9 @@ class ShortenUrlHandlerTest {
         argumentCaptor<Shortener>().apply {
             verify(repository).create(capture())
             assertThat(firstValue.originalUrl.url).isEqualTo(url)
-            assertThat(firstValue.shortCode.code).isEqualTo("qwert12")
-            assertThat(command.result).isEqualTo("https://seariver.org/qwert12")
+            assertThat(firstValue.shortCode.code).isNotEqualTo(lastGeneratedCode)
+            assertThat(command.result).isEqualTo("https://seariver.org/${firstValue.shortCode.code}")
+            lastGeneratedCode = firstValue.shortCode.code
         }
     }
 }
