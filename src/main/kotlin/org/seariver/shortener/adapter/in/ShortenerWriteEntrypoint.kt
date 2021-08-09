@@ -6,7 +6,7 @@ import org.seariver.protogen.ShortenerWriteServiceGrpcKt.ShortenerWriteServiceCo
 
 class ShortenerWriteEntrypoint : ShortenerWriteServiceCoroutineImplBase() {
 
-    override suspend fun createShortenUrl(request: ShortenRequest): ShortenerResponse {
+    override suspend fun createShortenedUrl(request: ShortenRequest): ShortenerResponse {
         return ShortenerResponse
             .newBuilder()
             .setOriginalUrl(request.originalUrl)

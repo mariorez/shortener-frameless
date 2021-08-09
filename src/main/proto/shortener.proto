@@ -5,7 +5,7 @@ option java_multiple_files = true;
 package org.seariver.protogen;
 
 service ShortenerWriteService {
-  rpc createShortenUrl (ShortenRequest) returns (ShortenerResponse) {}
+  rpc createShortenedUrl (ShortenRequest) returns (ShortenerResponse) {}
 }
 
 message ShortenRequest {
