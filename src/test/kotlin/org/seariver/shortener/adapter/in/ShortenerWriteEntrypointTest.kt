@@ -5,6 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEqualTo
 import helper.getChannel
 import kotlinx.coroutines.runBlocking
+import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
@@ -13,6 +14,8 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.seariver.protogen.ShortenRequest
 import org.seariver.protogen.ShortenerWriteServiceGrpcKt.ShortenerWriteServiceCoroutineStub
 import org.seariver.shortener.GrpcServer
+import org.seariver.shortener.lib.DiC
+import org.testcontainers.containers.PostgreSQLContainer
 
 @TestInstance(PER_CLASS)
 class ShortenerWriteEntrypointTest {
@@ -26,6 +29,17 @@ class ShortenerWriteEntrypointTest {
 
     @BeforeAll
     internal fun setup() {
+        val postgres = PostgreSQLContainer<Nothing>("postgres:13")
+        postgres.start()
+        System.setProperty("jdbc.url", postgres.jdbcUrl)
+        System.setProperty("jdbc.username", postgres.username)
+        System.setProperty("jdbc.password", postgres.password)
+        System.setProperty("jdbc.driverClassName", postgres.driverClassName)
+
+        val dic = DiC()
+        val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
+        flyway.migrate()
+
         GrpcServer(PORT).start()
     }
 

@@ -4,17 +4,18 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import kotlinx.coroutines.runBlocking
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.seariver.protogen.ShortenRequest
 import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.usecase.ShortenUrlCommand
 import org.testcontainers.containers.PostgreSQLContainer
 import java.sql.ResultSet
 import java.sql.Statement
-import javax.sql.DataSource
 
-class DicTest {
+class DiCTest {
 
     companion object {
         @BeforeAll
@@ -33,8 +34,7 @@ class DicTest {
     fun `WHEN invoke getDataSource THEN return a working DataSource`() {
 
         // given
-        val dic = Dic()
-        val ds: DataSource = dic.getDataSource()
+        val ds = DiC().getDataSource()
 
         // when
         val statement: Statement = ds.connection.createStatement()
@@ -50,7 +50,7 @@ class DicTest {
     fun `WHEN invoke ShortenerRepository THEN return a working ShortenerRepository`() {
 
         // given
-        val dic = Dic()
+        val dic = DiC()
         val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
         flyway.migrate()
         val repository = dic.getShortenerRepository()
@@ -67,10 +67,10 @@ class DicTest {
     }
 
     @Test
-    fun `test name placeholder`() {
+    fun `WHEN invoke ShortenUrlHandler THEN return a working ShortenUrlHandler`() {
 
         // given
-        val dic = Dic()
+        val dic = DiC()
         val handler = dic.getShortenUrlHandler()
         val repository = dic.getShortenerRepository()
         val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
@@ -79,6 +79,32 @@ class DicTest {
 
         // when
         handler.handle(ShortenUrlCommand(SourceUrl(givenUrl)))
+
+        // then
+        val shortener = repository.findBySourceUrl(SourceUrl(givenUrl))
+        assertThat(shortener).isNotNull()
+        shortener?.apply {
+            assertThat(sourceUrl.url).isEqualTo(givenUrl)
+            assertThat(shortCode.code).isNotEmpty()
+        }
+    }
+
+    @Test
+    fun `WHEN invoke ShortenerWriteEntrypoint THEN return a working ShortenerWriteEntrypoint`() {
+
+        // given
+        val dic = DiC()
+        val entrypoint = dic.getShortenerWriteEntrypoint()
+        val repository = dic.getShortenerRepository()
+        val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
+        flyway.migrate()
+        val givenUrl = "https://linux.org"
+        val request = ShortenRequest.newBuilder().setSourceUrl(givenUrl).build()
+
+        // when
+        runBlocking {
+            entrypoint.createShortenedUrl(request)
+        }
 
         // then
         val shortener = repository.findBySourceUrl(SourceUrl(givenUrl))
