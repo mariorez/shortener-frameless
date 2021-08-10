@@ -20,7 +20,10 @@ class ShortenUrlHandlerTest {
     private var lastGeneratedCode: String? = null
 
     @ParameterizedTest
-    @ValueSource(strings = ["https://www.google.com", "https://radar.org", "https://elba.dev"])
+    @ValueSource(strings = [
+        "https://www.google.com",
+        "https://java.io",
+        "https://faq.linux.org"])
     fun `GIVEN a valid command MUST persist new shortener data`(url: String) {
 
         // given
