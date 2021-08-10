@@ -11,7 +11,7 @@ class GrpcServer constructor(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val server: Server = ServerBuilder
         .forPort(port)
-        .addService(ShortenerWriteEntrypoint())
+        //.addService(ShortenerWriteEntrypoint())
         .build()
 
     fun start() {

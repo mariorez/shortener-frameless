@@ -6,10 +6,7 @@ import org.flywaydb.core.Flyway
 import org.testcontainers.containers.PostgreSQLContainer
 import javax.sql.DataSource
 
-fun getDataSource(): DataSource {
-
-    val container = PostgreSQLContainer<Nothing>("postgres:13")
-    container.start()
+fun getDataSource(container: PostgreSQLContainer<Nothing>): DataSource {
 
     val hikariConfig = HikariConfig().apply {
         jdbcUrl = container.jdbcUrl

@@ -5,15 +5,27 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import helper.getDataSource
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.seariver.shortener.application.domain.ShortCode
 import org.seariver.shortener.application.domain.Shortener
 import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.port.out.ShortenerRepository
+import org.testcontainers.containers.PostgreSQLContainer
 import javax.sql.DataSource
 
 class ShortenerRepositoryImplTest {
+
+    companion object {
+        private val container = PostgreSQLContainer<Nothing>("postgres:13")
+
+        @BeforeAll
+        @JvmStatic
+        internal fun setup() {
+            container.start()
+        }
+    }
 
     @Test
     fun `ShortenerRepositoryImpl MUST implement ShortenerRepository interface`() {
@@ -30,7 +42,7 @@ class ShortenerRepositoryImplTest {
         val shortener = Shortener(sourceUrl, shortCode)
 
         // when
-        val repository = ShortenerRepositoryImpl(getDataSource())
+        val repository = ShortenerRepositoryImpl(getDataSource(container))
         repository.create(shortener)
 
         // then
