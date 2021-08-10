@@ -49,10 +49,10 @@ class ShortenerWriteEntrypointTest {
             val response = stub.createShortenedUrl(request)
 
             // THEN
-            response.let {
-                assertThat(it.sourceUrl).isEqualTo(url)
-                assertThat(it.shortenedUrl).isNotEqualTo(lastGeneratedShortedUrl)
-                lastGeneratedShortedUrl = it.shortenedUrl
+            response.apply {
+                assertThat(sourceUrl).isEqualTo(url)
+                assertThat(shortenedUrl).isNotEqualTo(lastGeneratedShortedUrl)
+                lastGeneratedShortedUrl = shortenedUrl
             }
         }
     }

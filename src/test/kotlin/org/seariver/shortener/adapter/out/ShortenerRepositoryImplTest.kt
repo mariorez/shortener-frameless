@@ -48,9 +48,9 @@ class ShortenerRepositoryImplTest {
         // then
         val actualShortener = repository.findBySourceUrl(sourceUrl)
         assertThat(actualShortener).isNotNull()
-        actualShortener?.let {
-            assertThat(it.sourceUrl.url).isEqualTo(sourceUrl.url)
-            assertThat(it.shortCode.code).isEqualTo(shortCode.code)
+        actualShortener?.apply {
+            assertThat(sourceUrl.url).isEqualTo(sourceUrl.url)
+            assertThat(shortCode.code).isEqualTo(shortCode.code)
         }
     }
 }
