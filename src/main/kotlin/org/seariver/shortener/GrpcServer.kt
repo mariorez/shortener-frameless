@@ -7,10 +7,10 @@ import org.seariver.shortener.lib.DiC
 import org.slf4j.LoggerFactory
 
 class GrpcServer constructor(
-    private val port: Int
+    private val port: Int,
+    private val dic: DiC,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val dic = DiC()
     private val server: Server = ServerBuilder
         .forPort(port)
         .addService(ShortenerWriteEntrypoint(dic.getShortenUrlHandler()))
