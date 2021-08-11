@@ -7,7 +7,7 @@ import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.usecase.ShortenUrlCommand
 import org.seariver.shortener.application.usecase.ShortenUrlHandler
 
-class ShortenerWriteEntrypoint(
+class ShortenerWriteService(
     private val handler: ShortenUrlHandler
 ) : ShortenerWriteServiceCoroutineImplBase() {
 

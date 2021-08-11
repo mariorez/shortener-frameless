@@ -2,7 +2,7 @@ package org.seariver.shortener.lib
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import org.seariver.shortener.adapter.`in`.ShortenerWriteEntrypoint
+import org.seariver.shortener.adapter.`in`.ShortenerWriteService
 import org.seariver.shortener.adapter.out.ShortenerRepositoryImpl
 import org.seariver.shortener.application.port.out.ShortenerRepository
 import org.seariver.shortener.application.usecase.ShortenUrlHandler
@@ -30,7 +30,7 @@ class DiC {
         return ShortenUrlHandler(getShortenerRepository())
     }
 
-    fun getShortenerWriteEntrypoint(): ShortenerWriteEntrypoint {
-        return ShortenerWriteEntrypoint(getShortenUrlHandler())
+    fun getShortenerWriteService(): ShortenerWriteService {
+        return ShortenerWriteService(getShortenUrlHandler())
     }
 }

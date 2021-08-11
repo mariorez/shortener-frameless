@@ -20,12 +20,11 @@ fun main() {
     System.setProperty("jdbc.driverClassName", properties.getProperty("jdbc.driverClassName"))
 
     val dic = DiC()
-    val dataSource = dic.getDataSource()
 
-    val flyway = Flyway.configure().dataSource(dataSource).load()
+    val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
     flyway.migrate()
 
-    GrpcServer(50051, dic).run {
+    GrpcServer(50051, dic.getShortenerWriteService()).run {
         start()
         blockUntilShutdown()
     }

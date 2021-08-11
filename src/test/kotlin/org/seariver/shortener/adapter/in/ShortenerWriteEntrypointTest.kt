@@ -40,7 +40,7 @@ class ShortenerWriteEntrypointTest {
         val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
         flyway.migrate()
 
-        GrpcServer(PORT, dic).start()
+        GrpcServer(PORT, dic.getShortenerWriteService()).start()
     }
 
     @ParameterizedTest

@@ -2,18 +2,16 @@ package org.seariver.shortener
 
 import io.grpc.Server
 import io.grpc.ServerBuilder
-import org.seariver.shortener.adapter.`in`.ShortenerWriteEntrypoint
-import org.seariver.shortener.lib.DiC
+import org.seariver.shortener.adapter.`in`.ShortenerWriteService
 import org.slf4j.LoggerFactory
 
 class GrpcServer constructor(
     private val port: Int,
-    private val dic: DiC,
-) {
+    shortenerWriteService: ShortenerWriteService) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val server: Server = ServerBuilder
         .forPort(port)
-        .addService(ShortenerWriteEntrypoint(dic.getShortenUrlHandler()))
+        .addService(shortenerWriteService)
         .build()
 
     fun start() {

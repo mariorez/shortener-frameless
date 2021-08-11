@@ -94,7 +94,7 @@ class DiCTest {
 
         // given
         val dic = DiC()
-        val entrypoint = dic.getShortenerWriteEntrypoint()
+        val entrypoint = dic.getShortenerWriteService()
         val repository = dic.getShortenerRepository()
         val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
         flyway.migrate()
