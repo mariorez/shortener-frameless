@@ -3,11 +3,17 @@ import com.google.protobuf.gradle.*
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.21"
     id("com.google.protobuf") version "0.8.17"
+    id("org.sonarqube") version "3.3"
+    id("jacoco")
     application
 }
 
 version = "0.1"
 group = "org.seariver"
+
+repositories {
+    mavenCentral()
+}
 
 val kotlinVersion = project.properties.get("kotlin_version")
 val coroutinesVersion = project.properties.get("coroutines_version")
@@ -41,7 +47,7 @@ dependencies {
     // Test
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
-    testImplementation ("com.willowtreeapps.assertk:assertk-jvm:0.24")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.24")
     testImplementation("org.testcontainers:postgresql:1.16.0")
 }
 
@@ -66,6 +72,17 @@ tasks {
     }
     test {
         useJUnitPlatform()
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.required.set(true)
     }
 }
 
@@ -101,6 +118,10 @@ protobuf {
         }
     }
 }
-repositories {
-    mavenCentral()
+
+sonarqube {
+    properties {
+        property("sonar.core.codeCoveragePlugin", "jacoco")
+        property("sonar.exclusions", "**/ShortCode.*,**/SourceUrl.*")
+    }
 }
