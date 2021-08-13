@@ -65,7 +65,7 @@ java {
 }
 
 application {
-    mainClass.set("org.seariver.GrpcServerKt")
+    mainClass.set("org.seariver.shortener.AppMainKt")
 }
 
 tasks {

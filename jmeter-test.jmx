@@ -35,29 +35,31 @@
           <boolProp name="CounterConfig.per_user">false</boolProp>
         </CounterConfig>
         <hashTree/>
-        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="Hello parameters" enabled="true">
+        <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="parameters" enabled="true">
           <collectionProp name="UserParameters.names">
-            <stringProp name="3373707">name</stringProp>
+            <stringProp name="3601339">uuid</stringProp>
+            <stringProp name="116079">url</stringProp>
           </collectionProp>
           <collectionProp name="UserParameters.thread_values">
-            <collectionProp name="-524392182">
-              <stringProp name="746142063">${counter} - ${__UUID()}</stringProp>
+            <collectionProp name="-1563956243">
+              <stringProp name="118040362">${__UUID()}</stringProp>
+              <stringProp name="-1586872499">https://wherever-${counter}.com</stringProp>
             </collectionProp>
           </collectionProp>
           <boolProp name="UserParameters.per_iteration">true</boolProp>
         </UserParameters>
         <hashTree/>
-        <vn.zalopay.benchmark.GRPCSampler guiclass="vn.zalopay.benchmark.GRPCSamplerGui" testclass="vn.zalopay.benchmark.GRPCSampler" testname="Hello World Request" enabled="true">
-          <stringProp name="GRPCSampler.protoFolder">/home/mario/Development/shortener/src/main/proto</stringProp>
+        <vn.zalopay.benchmark.GRPCSampler guiclass="vn.zalopay.benchmark.GRPCSamplerGui" testclass="vn.zalopay.benchmark.GRPCSampler" testname="Create URL" enabled="true">
+          <stringProp name="GRPCSampler.protoFolder">/home/mario/Development/shortener-frameless/src/main/proto</stringProp>
           <stringProp name="GRPCSampler.libFolder"></stringProp>
           <stringProp name="GRPCSampler.metadata"></stringProp>
           <stringProp name="GRPCSampler.host">localhost</stringProp>
           <stringProp name="GRPCSampler.port">50051</stringProp>
-          <stringProp name="GRPCSampler.fullMethod">org.seariver.protogen.HelloService/world</stringProp>
+          <stringProp name="GRPCSampler.fullMethod">org.seariver.protogen.ShortenerWriteService/createShortenedUrl</stringProp>
           <stringProp name="GRPCSampler.deadline">1000</stringProp>
           <boolProp name="GRPCSampler.tls">false</boolProp>
           <stringProp name="GRPCSampler.requestJson">{
-  &quot;name&quot;: &quot;${name}&quot;
+  &quot;source_url&quot;: &quot;${url}&quot;
 }
 </stringProp>
         </vn.zalopay.benchmark.GRPCSampler>
