@@ -47,6 +47,6 @@ class ShortenerRepositoryImpl(
             }
         }
 
-        return result;
+        return result
     }
 }

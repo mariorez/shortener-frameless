@@ -25,6 +25,6 @@ class ShortenUrlHandler(
         val shortCode = ShortCode(code)
         val shortener = Shortener(command.sourceUrl, shortCode)
         repository.create(shortener)
-        command.result = "https://seariver.org/${code}"
+        command.result = "https://seariver.org/$code"
     }
 }

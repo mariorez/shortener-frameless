@@ -1,9 +1,11 @@
 package org.seariver.shortener
 
+import java.io.File
+import java.util.Properties
 import org.flywaydb.core.Flyway
 import org.seariver.shortener.lib.DiC
-import java.io.File
-import java.util.*
+
+private const val PORT = 50051
 
 fun main() {
 
@@ -24,7 +26,7 @@ fun main() {
     val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
     flyway.migrate()
 
-    GrpcServer(50051, dic.getShortenerWriteService()).run {
+    GrpcServer(PORT, dic.getShortenerWriteService()).run {
         start()
         blockUntilShutdown()
     }

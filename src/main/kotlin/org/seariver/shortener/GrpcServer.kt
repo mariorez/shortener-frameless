@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory
 
 class GrpcServer constructor(
     private val port: Int,
-    shortenerWriteService: ShortenerWriteService) {
+    private val shortenerWriteService: ShortenerWriteService
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val server: Server = ServerBuilder
         .forPort(port)
