@@ -4,6 +4,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import java.sql.ResultSet
+import java.sql.Statement
 import kotlinx.coroutines.runBlocking
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.BeforeAll
@@ -12,12 +14,13 @@ import org.seariver.protogen.ShortenRequest
 import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.usecase.ShortenUrlCommand
 import org.testcontainers.containers.PostgreSQLContainer
-import java.sql.ResultSet
-import java.sql.Statement
 
 class DiCTest {
 
     companion object {
+
+        private val dic: DiC = DiC()
+
         @BeforeAll
         @JvmStatic
         internal fun setup() {
@@ -34,7 +37,7 @@ class DiCTest {
     fun `WHEN invoke getDataSource THEN return a working DataSource`() {
 
         // given
-        val ds = DiC().getDataSource()
+        val ds = dic.dataSource
 
         // when
         val statement: Statement = ds.connection.createStatement()
@@ -50,10 +53,9 @@ class DiCTest {
     fun `WHEN invoke ShortenerRepository THEN return a working ShortenerRepository`() {
 
         // given
-        val dic = DiC()
-        val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
+        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
         flyway.migrate()
-        val repository = dic.getShortenerRepository()
+        val repository = dic.shortenerRepository
 
         // when
         val shortener = repository.findBySourceUrl(SourceUrl("https://google.com"))
@@ -70,10 +72,9 @@ class DiCTest {
     fun `WHEN invoke ShortenUrlHandler THEN return a working ShortenUrlHandler`() {
 
         // given
-        val dic = DiC()
-        val handler = dic.getShortenUrlHandler()
-        val repository = dic.getShortenerRepository()
-        val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
+        val handler = dic.shortenerHandler
+        val repository = dic.shortenerRepository
+        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
         flyway.migrate()
         val givenUrl = "http://seariver.org"
 
@@ -93,10 +94,9 @@ class DiCTest {
     fun `WHEN invoke ShortenerWriteEntrypoint THEN return a working ShortenerWriteEntrypoint`() {
 
         // given
-        val dic = DiC()
-        val entrypoint = dic.getShortenerWriteService()
-        val repository = dic.getShortenerRepository()
-        val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
+        val entrypoint = dic.shortenerWriteService
+        val repository = dic.shortenerRepository
+        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
         flyway.migrate()
         val givenUrl = "https://linux.org"
         val request = ShortenRequest.newBuilder().setSourceUrl(givenUrl).build()

@@ -23,10 +23,10 @@ fun main() {
 
     val dic = DiC()
 
-    val flyway = Flyway.configure().dataSource(dic.getDataSource()).load()
+    val flyway = Flyway.configure().dataSource(dic.dataSource).load()
     flyway.migrate()
 
-    GrpcServer(PORT, dic.getShortenerWriteService()).run {
+    GrpcServer(PORT, dic.shortenerWriteService).run {
         start()
         blockUntilShutdown()
     }
