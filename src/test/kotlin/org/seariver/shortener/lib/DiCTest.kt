@@ -18,9 +18,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 class DiCTest {
 
     companion object {
-
-        private val dic: DiC = DiC()
-
         @BeforeAll
         @JvmStatic
         internal fun setup() {
