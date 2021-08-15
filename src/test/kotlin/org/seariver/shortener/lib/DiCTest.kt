@@ -37,7 +37,7 @@ class DiCTest {
     fun `WHEN invoke getDataSource THEN return a working DataSource`() {
 
         // given
-        val ds = dic.dataSource
+        val ds = DiC.dataSource
 
         // when
         val statement: Statement = ds.connection.createStatement()
@@ -53,9 +53,9 @@ class DiCTest {
     fun `WHEN invoke ShortenerRepository THEN return a working ShortenerRepository`() {
 
         // given
-        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
+        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
         flyway.migrate()
-        val repository = dic.shortenerRepository
+        val repository = DiC.shortenerRepository
 
         // when
         val shortener = repository.findBySourceUrl(SourceUrl("https://google.com"))
@@ -72,9 +72,9 @@ class DiCTest {
     fun `WHEN invoke ShortenUrlHandler THEN return a working ShortenUrlHandler`() {
 
         // given
-        val handler = dic.shortenerHandler
-        val repository = dic.shortenerRepository
-        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
+        val handler = DiC.shortenerHandler
+        val repository = DiC.shortenerRepository
+        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
         flyway.migrate()
         val givenUrl = "http://seariver.org"
 
@@ -94,9 +94,9 @@ class DiCTest {
     fun `WHEN invoke ShortenerWriteEntrypoint THEN return a working ShortenerWriteEntrypoint`() {
 
         // given
-        val entrypoint = dic.shortenerWriteService
-        val repository = dic.shortenerRepository
-        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
+        val entrypoint = DiC.shortenerWriteService
+        val repository = DiC.shortenerRepository
+        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
         flyway.migrate()
         val givenUrl = "https://linux.org"
         val request = ShortenRequest.newBuilder().setSourceUrl(givenUrl).build()

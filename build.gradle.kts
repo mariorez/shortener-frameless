@@ -8,6 +8,7 @@ import com.google.protobuf.gradle.protoc
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.21"
     id("com.google.protobuf") version "0.8.17"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
     id("org.sonarqube") version "3.3"
     id("jacoco")
     id("io.gitlab.arturbosch.detekt").version("1.18.0-RC3")

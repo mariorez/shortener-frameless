@@ -36,12 +36,10 @@ class ShortenerWriteEntrypointTest {
         System.setProperty("jdbc.password", postgres.password)
         System.setProperty("jdbc.driverClassName", postgres.driverClassName)
 
-        val dic = DiC()
-
-        val flyway = Flyway.configure().dataSource(dic.dataSource).load()
+        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
         flyway.migrate()
 
-        GrpcServer(PORT, dic.shortenerWriteService).start()
+        GrpcServer(PORT, DiC.shortenerWriteService).start()
     }
 
     @ParameterizedTest

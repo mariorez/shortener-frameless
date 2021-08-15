@@ -21,12 +21,10 @@ fun main() {
     System.setProperty("jdbc.password", properties.getProperty("jdbc.password"))
     System.setProperty("jdbc.driverClassName", properties.getProperty("jdbc.driverClassName"))
 
-    val dic = DiC()
-
-    val flyway = Flyway.configure().dataSource(dic.dataSource).load()
+    val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
     flyway.migrate()
 
-    GrpcServer(PORT, dic.shortenerWriteService).run {
+    GrpcServer(PORT, DiC.shortenerWriteService).run {
         start()
         blockUntilShutdown()
     }
