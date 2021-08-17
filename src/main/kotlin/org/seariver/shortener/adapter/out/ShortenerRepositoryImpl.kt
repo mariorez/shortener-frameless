@@ -1,31 +1,34 @@
 package org.seariver.shortener.adapter.out
 
+import javax.sql.DataSource
 import org.seariver.shortener.application.domain.ShortCode
 import org.seariver.shortener.application.domain.Shortener
 import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.port.out.ShortenerRepository
-import javax.sql.DataSource
 
 class ShortenerRepositoryImpl(
     private val datasource: DataSource
 ) : ShortenerRepository {
 
-    private val connection = datasource.connection
-
     override fun create(shortener: Shortener) {
+
         val sql = """
             INSERT INTO shortener (source_url, short_code) 
             values (?, ?)
             """.trimIndent()
 
-        connection.prepareStatement(sql).run {
-            setString(1, shortener.sourceUrl.url)
-            setString(2, shortener.shortCode.code)
-            executeUpdate()
+        datasource.connection.use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, shortener.sourceUrl.url)
+                stmt.setString(2, shortener.shortCode.code)
+                stmt.executeUpdate()
+            }
         }
     }
 
     override fun findBySourceUrl(sourceUrl: SourceUrl): Shortener? {
+
+        var result: Shortener? = null
 
         val sql = """
             SELECT source_url, short_code 
@@ -33,16 +36,16 @@ class ShortenerRepositoryImpl(
             WHERE source_url = ?
             """.trimIndent()
 
-        var result: Shortener? = null
-
-        connection.prepareStatement(sql).run {
-            setString(1, sourceUrl.url)
-            executeQuery().run {
-                while (next()) {
-                    result = Shortener(
-                        SourceUrl(getString("source_url")),
-                        ShortCode(getString("short_code"))
-                    )
+        datasource.connection.use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, sourceUrl.url)
+                stmt.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        result = Shortener(
+                            SourceUrl(rs.getString("source_url")),
+                            ShortCode(rs.getString("short_code"))
+                        )
+                    }
                 }
             }
         }
