@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.seariver.protogen.ShortenRequest
 import org.seariver.protogen.ShortenerWriteServiceGrpcKt.ShortenerWriteServiceCoroutineStub
 import org.seariver.shortener.GrpcServer
-import org.seariver.shortener.lib.DiC
+import org.seariver.shortener.lib.Cdi
 import org.testcontainers.containers.PostgreSQLContainer
 
 @TestInstance(PER_CLASS)
@@ -36,10 +36,10 @@ class ShortenerWriteEntrypointTest {
         System.setProperty("jdbc.password", postgres.password)
         System.setProperty("jdbc.driverClassName", postgres.driverClassName)
 
-        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
+        val flyway = Flyway.configure().dataSource(Cdi.dataSource).load()
         flyway.migrate()
 
-        GrpcServer(PORT, DiC.shortenerWriteService).start()
+        GrpcServer(PORT, Cdi.shortenerWriteService).start()
     }
 
     @ParameterizedTest

@@ -1,30 +1,18 @@
 package org.seariver.shortener
 
-import java.io.File
-import java.util.Properties
 import org.flywaydb.core.Flyway
-import org.seariver.shortener.lib.DiC
+import org.seariver.shortener.lib.Cdi
+import org.seariver.shortener.lib.PropertiesFactory
 
 private const val PORT = 50051
 
 fun main() {
 
-    val input = File(
-        "/home/mario/Development/shortener-frameless/src/main/resources/application.properties"
-    ).inputStream()
+    PropertiesFactory.load()
 
-    val properties = Properties()
-    properties.load(input)
+    Flyway.configure().dataSource(Cdi.dataSource).load().migrate()
 
-    System.setProperty("jdbc.url", properties.getProperty("jdbc.url"))
-    System.setProperty("jdbc.username", properties.getProperty("jdbc.username"))
-    System.setProperty("jdbc.password", properties.getProperty("jdbc.password"))
-    System.setProperty("jdbc.driverClassName", properties.getProperty("jdbc.driverClassName"))
-
-    val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
-    flyway.migrate()
-
-    GrpcServer(PORT, DiC.shortenerWriteService).run {
+    GrpcServer(PORT, Cdi.shortenerWriteService).run {
         start()
         blockUntilShutdown()
     }

@@ -15,7 +15,7 @@ import org.seariver.shortener.application.domain.SourceUrl
 import org.seariver.shortener.application.usecase.ShortenUrlCommand
 import org.testcontainers.containers.PostgreSQLContainer
 
-class DiCTest {
+class CdiTest {
 
     companion object {
         @BeforeAll
@@ -34,7 +34,7 @@ class DiCTest {
     fun `WHEN invoke getDataSource THEN return a working DataSource`() {
 
         // given
-        val ds = DiC.dataSource
+        val ds = Cdi.dataSource
 
         // when
         val statement: Statement = ds.connection.createStatement()
@@ -50,9 +50,9 @@ class DiCTest {
     fun `WHEN invoke ShortenerRepository THEN return a working ShortenerRepository`() {
 
         // given
-        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
+        val flyway = Flyway.configure().dataSource(Cdi.dataSource).load()
         flyway.migrate()
-        val repository = DiC.shortenerRepository
+        val repository = Cdi.shortenerRepository
 
         // when
         val shortener = repository.findBySourceUrl(SourceUrl("https://google.com"))
@@ -69,9 +69,9 @@ class DiCTest {
     fun `WHEN invoke ShortenUrlHandler THEN return a working ShortenUrlHandler`() {
 
         // given
-        val handler = DiC.shortenerHandler
-        val repository = DiC.shortenerRepository
-        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
+        val handler = Cdi.shortenerHandler
+        val repository = Cdi.shortenerRepository
+        val flyway = Flyway.configure().dataSource(Cdi.dataSource).load()
         flyway.migrate()
         val givenUrl = "http://seariver.org"
 
@@ -91,9 +91,9 @@ class DiCTest {
     fun `WHEN invoke ShortenerWriteEntrypoint THEN return a working ShortenerWriteEntrypoint`() {
 
         // given
-        val entrypoint = DiC.shortenerWriteService
-        val repository = DiC.shortenerRepository
-        val flyway = Flyway.configure().dataSource(DiC.dataSource).load()
+        val entrypoint = Cdi.shortenerWriteService
+        val repository = Cdi.shortenerRepository
+        val flyway = Flyway.configure().dataSource(Cdi.dataSource).load()
         flyway.migrate()
         val givenUrl = "https://linux.org"
         val request = ShortenRequest.newBuilder().setSourceUrl(givenUrl).build()

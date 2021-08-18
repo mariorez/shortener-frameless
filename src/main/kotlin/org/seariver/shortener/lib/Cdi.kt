@@ -8,7 +8,7 @@ import org.seariver.shortener.adapter.out.ShortenerRepositoryImpl
 import org.seariver.shortener.application.port.out.ShortenerRepository
 import org.seariver.shortener.application.usecase.ShortenUrlHandler
 
-object DiC {
+object Cdi {
     val dataSource: DataSource by lazy {
         val hikariConfig = HikariConfig().apply {
             jdbcUrl = System.getProperty("jdbc.url")
