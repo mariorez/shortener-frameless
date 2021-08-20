@@ -1,10 +1,18 @@
-version: '3.7'
+version: "3.7"
 
 services:
+
+  app:
+    container_name: shortener_app
+    build: .
+    network_mode: host
+    ports:
+      - "50051:50051"
 
   postgres:
     container_name: shortener_postgres
     image: postgres:13
+    network_mode: host
     ports:
       - "5432:5432"
     environment:
